@@ -22,7 +22,7 @@ install:
 
 script:
   - mkdir -p build/logs
-  - phpdbg -qrr phpunit
+  - php phpunit.php
 
 after_success:
   - vendor/bin/php-coveralls -v

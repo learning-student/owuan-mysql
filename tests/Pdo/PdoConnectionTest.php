@@ -4,6 +4,7 @@
 namespace Owuan\Mysql\Test;
 
 
+use function foo\func;
 use Owuan\Mysql\ConnectionException;
 use Owuan\Mysql\PDO;
 
@@ -24,11 +25,10 @@ class PdoConnectionTest extends TestCase
 
     public function testPdoCanConnectWithCorrectInfo()
     {
+        [$dsn, $username, $password] = $this->getConnectionInfo();
 
-        go(function (){
-            [$dsn, $username, $password] = $this->getConnectionInfo();
+        $pdo = new PDO($dsn, $username, $password);
 
-            new PDO($dsn, $username, $password);
-        });
+        $this->assertInstanceOf(PDO::class, $pdo);
     }
 }
