@@ -1,12 +1,10 @@
 <?php declare(strict_types=1);
 
-
 \Swoole\Runtime::enableCoroutine();
 
 
 go(function () {
     global $argv, $argc;
-
 
     /*
  * This file is part of PHPUnit.
@@ -40,7 +38,6 @@ go(function () {
     }
 
 
-
     if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
         fwrite(
             STDERR,
@@ -60,13 +57,16 @@ go(function () {
 
     unset($options);
 
-    require PHPUNIT_COMPOSER_INSTALL;
 
-    PHPUnit\TextUI\Command::main();
+    require './vendor/autoload.php';
 
 
-    die(0);
+    PHPUnit\TextUI\Command::main(false);
+
+
 });
 
+
 die(0);
+
 
