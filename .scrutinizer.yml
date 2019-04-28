@@ -5,8 +5,5 @@ build:
 filter:
   excluded_paths:
     - "tests/*"
-    - "routes/*"
-    - "config/*"
-    - "stubs/*"
   dependency_paths:
     - "vendor/*"
