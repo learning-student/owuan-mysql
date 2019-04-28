@@ -28,7 +28,7 @@ class PDO extends BasePDO
     ];
 
     /** @var \Swoole\Coroutine\Mysql */
-    public $client;
+    protected $client;
 
     /**
      * @var bool
@@ -69,9 +69,16 @@ class PDO extends BasePDO
     /**
      * @param mixed $client
      */
-    protected function setClient($client = null)
+    public function setClient($client = null)
     {
         $this->client = $client ?: new Mysql();
+    }
+
+    /**
+     * @return Mysql
+     */
+    public function getClient(){
+        return $this->client;
     }
 
     /**
@@ -210,7 +217,7 @@ class PDO extends BasePDO
      */
     public function errorCode()
     {
-        $this->client->errno;
+        return $this->client->errno;
     }
 
     /**
@@ -312,10 +319,10 @@ class PDO extends BasePDO
             case self::ATTR_PERSISTENT:
             case self::ATTR_PREFETCH:
             case self::ATTR_SERVER_INFO:
-                return self::$options['timeout'];
             case self::ATTR_SERVER_VERSION:
                 return 'Swoole Mysql';
             case self::ATTR_TIMEOUT:
+                return self::$options['timeout'];
             default:
                 throw new \InvalidArgumentException('Not implemented yet!');
         }

@@ -63,6 +63,24 @@ class PdoQueryTest extends TestCase
         }
     }
 
+    public function testPrepareAndExecuteWithError(){
+        $pdo = $this->getPdoInstance();
+        $prepare = $pdo->prepare('DROP TABLE ttt;');
+
+        try{
+            $prepare->execute();
+        }catch (\Exception $exception){
+            $error = $prepare->errorInfo();
+
+            $this->assertArrayHasKey(2, $error);
+
+            $code = $prepare->errorCode();
+
+            $this->assertEquals(1051, $code);
+
+        }
+    }
+
 
     public function testTransactionCommit()
     {
@@ -80,6 +98,21 @@ class PdoQueryTest extends TestCase
         $response = $pdo->commit();
 
         $this->assertTrue($response);
+    }
+
+    public function testExecMethod()
+    {
+        $pdo = $this->getPdoInstance();
+
+
+        $exec = $pdo->exec(self::$queriesToRun[0]);
+
+        $this->assertEquals(0, $exec);
+
+        $exec = $pdo->exec(self::$queriesToRun[1]);
+
+        $this->assertEquals(1, $exec);
+
     }
 
     public function testTransactionRollback()
@@ -119,6 +152,29 @@ class PdoQueryTest extends TestCase
         $this->expectException(QueryException::class);
 
         $pdo->query('SELEC * FROM testtable');
+
+
+    }
+
+    public function testQueryReturnsCorrectErrorInfo()
+    {
+        $pdo = $this->getPdoInstance();
+
+        try{
+            $pdo->query('SELECT * FROM testable');
+
+        }catch (\Exception $exception){
+            $error = $pdo->errorInfo();
+
+            $this->assertArrayHasKey(2, $error);
+            $this->assertEquals("Table 'owuan_mysql_test.testable' doesn't exist", $error[2]);
+
+            $code = $pdo->errorCode();
+
+            $this->assertEquals(1146, $code);
+        }
+
+
     }
 
 

@@ -30,14 +30,24 @@ class PDOStatement extends BaseStatement
         $this->timeout = $driverOptions['timeout'] ?? -1;
     }
 
+    /**
+     * @return string
+     */
     public function errorCode()
     {
-        return $this->statement->errno;
+        return (string) $this->statement->errno;
     }
 
+    /**
+     * @return array
+     */
     public function errorInfo()
     {
-        return $this->statement->error;
+        return [
+            $this->statement->errno,
+            $this->statement->errno,
+            $this->statement->error,
+        ];
     }
 
     public function rowCount()
@@ -47,7 +57,7 @@ class PDOStatement extends BaseStatement
 
     public function bindParam($parameter, &$variable, $type = null, $maxlen = null, $driverdata = null)
     {
-        if (! is_string($parameter) && ! is_int($parameter)) {
+        if (!is_string($parameter) && !is_int($parameter)) {
             return false;
         }
 
@@ -59,15 +69,15 @@ class PDOStatement extends BaseStatement
 
     public function bindValue($parameter, $variable, $type = null)
     {
-        if (! is_string($parameter) && ! is_int($parameter)) {
+        if (!is_string($parameter) && !is_int($parameter)) {
             return false;
         }
 
         if (is_object($variable)) {
-            if (! method_exists($variable, '__toString')) {
+            if (!method_exists($variable, '__toString')) {
                 return false;
             } else {
-                $variable = (string) $variable;
+                $variable = (string)$variable;
             }
         }
 
@@ -89,14 +99,14 @@ class PDOStatement extends BaseStatement
      */
     public function execute($inputParameters = null)
     {
-        if (! empty($inputParameters)) {
+        if (!empty($inputParameters)) {
             foreach ($inputParameters as $key => $value) {
                 $this->bindParam($key, $value);
             }
         }
 
         $inputParameters = [];
-        if (! empty($this->statement->bindKeyMap)) {
+        if (!empty($this->statement->bindKeyMap)) {
             foreach ($this->statement->bindKeyMap as $nameKey => $numKey) {
                 if (isset($this->bindMap[$nameKey])) {
                     $inputParameters[$numKey] = $this->bindMap[$nameKey];
@@ -111,7 +121,7 @@ class PDOStatement extends BaseStatement
         $this->afterExecute();
 
         if ($result === false) {
-            throw new \PDOException($this->errorInfo(), $this->errorCode());
+            throw new \PDOException($this->errorInfo()[2], $this->errorCode());
         }
 
         return true;
@@ -125,7 +135,7 @@ class PDOStatement extends BaseStatement
     private function executeWhenStringQueryEmpty()
     {
         if (is_string($this->statement) && empty($this->resultSet)) {
-            $this->resultSet = $this->parent->client->query($this->statement);
+            $this->resultSet = $this->parent->getClient()->query($this->statement);
             $this->afterExecute();
         }
     }
@@ -153,7 +163,7 @@ class PDOStatement extends BaseStatement
         $ctorArgs = null
     )
     {
-        if (! is_array($rawData)) {
+        if (!is_array($rawData)) {
             return false;
         }
         if (empty($rawData)) {
@@ -176,7 +186,7 @@ class PDOStatement extends BaseStatement
                 break;
             case PDO::FETCH_OBJ:
                 foreach ($rawData as $row) {
-                    $resultSet[] = (object) $row;
+                    $resultSet[] = (object)$row;
                 }
                 break;
             case PDO::FETCH_NUM:
@@ -202,7 +212,7 @@ class PDOStatement extends BaseStatement
         $this->executeWhenStringQueryEmpty();
 
         $cursorOrientation = is_null($cursorOrientation) ? PDO::FETCH_ORI_NEXT : $cursorOrientation;
-        $cursorOffset = is_null($cursorOffset) ? 0 : (int) $cursorOffset;
+        $cursorOffset = is_null($cursorOffset) ? 0 : (int)$cursorOffset;
 
         switch ($cursorOrientation) {
             case PDO::FETCH_ORI_ABS:
