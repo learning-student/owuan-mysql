@@ -1,0 +1,54 @@
+{
+  "name": "swooletw/laravel-swoole",
+  "description": "High performance HTTP server based on Swoole. Speed up your Laravel and Lumen applications.",
+  "keywords": [
+    "swoole",
+    "laravel",
+    "lumen",
+    "performance",
+    "http",
+    "server"
+  ],
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "Albert Chen",
+      "email": "albert@unisharp.com"
+    },
+    {
+      "name": "Huang Yi",
+      "email": "coodeer@163.com"
+    },
+    {
+      "name": "Vahit Şerif Sağlam",
+      "email": "vahit.serif119@gmail.com"
+    }
+  ],
+  "require": {
+    "php": "^7.2",
+    "ext-pdo": "*",
+    "ext-swoole": "*",
+    "owuan/owuan-cache": "^1.0"
+  },
+  "require-dev": {
+    "phpunit/phpunit": "^8.0",
+    "phpunit/php-code-coverage": "^7.0",
+    "php-coveralls/php-coveralls": "^2.1",
+    "mockery/mockery": "~1.0",
+    "codedungeon/phpunit-result-printer": "^0.26.0",
+    "php-mock/php-mock": "^2.0"
+  },
+  "autoload": {
+    "psr-4": {
+      "Owuan\\Mysql\\": "src"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Owuan\\Mysql\\Test\\": "tests"
+    }
+  },
+  "suggest": {
+    "owuan/owuan-cache": "to cache your results"
+  }
+}

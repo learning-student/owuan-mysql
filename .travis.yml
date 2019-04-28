@@ -1,0 +1,27 @@
+language: php
+dist: trusty
+sudo: false
+
+
+services:
+  - mysql
+
+
+matrix:
+  include:
+    - php: 7.2
+
+before_install:
+  - printf "\n" | pecl install swoole
+  - mysql -e 'CREATE DATABASE owuan_mysql_test;'
+
+
+install:
+  - travis_retry composer install --no-suggest --prefer-dist -n -o
+
+script:
+  - mkdir -p build/logs
+  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+
+after_success:
+  - vendor/bin/php-coveralls -v
