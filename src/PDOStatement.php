@@ -83,6 +83,10 @@ class PDOStatement extends BaseStatement
         $this->bindMap = [];
     }
 
+    /**
+     * @param array|null $inputParameters
+     * @return bool
+     */
     public function execute($inputParameters = null)
     {
         if (! empty($inputParameters)) {
@@ -110,7 +114,7 @@ class PDOStatement extends BaseStatement
             throw new \PDOException($this->errorInfo(), $this->errorCode());
         }
 
-        return $ok;
+        return true;
     }
 
     public function setFetchMode($fetchStyle, $params = null)

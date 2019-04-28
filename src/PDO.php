@@ -133,7 +133,7 @@ class PDO extends BasePDO
             }
         }
 
-        return array_merge( self::$options, $configuredOptions);
+        return array_merge(self::$options, $configuredOptions);
     }
 
     /**
@@ -166,12 +166,14 @@ class PDO extends BasePDO
     }
 
     /**
-     * @return bool|void
+     * @return bool
      */
     public function rollBack()
     {
-        $this->client->rollback();
+        $rollback = $this->client->rollback();
         $this->inTransaction = false;
+
+        return $rollback;
     }
 
     /**
@@ -179,8 +181,10 @@ class PDO extends BasePDO
      */
     public function commit()
     {
-        $this->client->commit();
+        $commit = $this->client->commit();
         $this->inTransaction = true;
+
+        return $commit;
     }
 
     /**
@@ -239,16 +243,15 @@ class PDO extends BasePDO
      * @param mixed $arg3
      * @param array $ctorargs
      *
-     * @throws QueryException
      * @return array|bool|false|\PDOStatement
+     * @throws QueryException
      */
     public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = [])
     {
         $result = $this->client->query($statement, self::$options['timeout'] ?? null);
 
         if ($result === false) {
-            $exception = new Exception($this->client->error, $this->client->errno);
-            throw new QueryException($statement, [], $exception);
+            throw new QueryException($this->client->error, $this->client->errno);
         }
 
         return $result;
@@ -258,8 +261,8 @@ class PDO extends BasePDO
      * @param string $statement
      * @param array $options
      *
-     * @throws QueryException
      * @return bool|\PDOStatement|\SwooleTW\Http\Coroutine\PDOStatement
+     * @throws QueryException
      */
     public function prepare($statement, $options = null)
     {
@@ -284,10 +287,9 @@ class PDO extends BasePDO
         }
 
 
-        $statementException = new StatementException($this->client->error, $this->client->errno);
-        throw new QueryException($statement, [], $statementException);
-
+        throw new QueryException($statement . ":" . $this->client->error, $this->client->errno);
     }
+
 
     /**
      * @param int $attribute

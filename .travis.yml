@@ -13,6 +13,7 @@ matrix:
 
 before_install:
   - phpenv config-rm xdebug.ini
+  - printf "\n" | pecl install pcov
   - printf "\n" | pecl install swoole
   - mysql -e 'CREATE DATABASE owuan_mysql_test;'
 
