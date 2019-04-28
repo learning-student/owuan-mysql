@@ -1,12 +1,12 @@
 <?php
 
 
-namespace Owuan\Mysql\Test;
+namespace Owuan\Mysql\Test\Features\Pdo;
 
 
-use function foo\func;
 use Owuan\Mysql\ConnectionException;
 use Owuan\Mysql\PDO;
+use Owuan\Mysql\Test\TestCase;
 
 class PdoConnectionTest extends TestCase
 {
@@ -21,6 +21,7 @@ class PdoConnectionTest extends TestCase
         new PDO($dsn, "", $password);
 
     }
+
 
 
     public function testPdoCanConnectWithCorrectInfo()
