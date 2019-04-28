@@ -51,6 +51,8 @@ class PDO extends BasePDO
         try {
             parent::__construct($dsn, $username, $password, $options);
             $this->setClient();
+
+
             $this->connect($this->getOptions(
                 $dsn,
                 $username,
@@ -131,7 +133,7 @@ class PDO extends BasePDO
             }
         }
 
-        return array_merge($configuredOptions, self::$options);
+        return array_merge( self::$options, $configuredOptions);
     }
 
     /**
@@ -237,6 +239,7 @@ class PDO extends BasePDO
      * @param mixed $arg3
      * @param array $ctorargs
      *
+     * @throws QueryException
      * @return array|bool|false|\PDOStatement
      */
     public function query($statement, $mode = PDO::ATTR_DEFAULT_FETCH_MODE, $arg3 = null, array $ctorargs = [])
@@ -255,6 +258,7 @@ class PDO extends BasePDO
      * @param string $statement
      * @param array $options
      *
+     * @throws QueryException
      * @return bool|\PDOStatement|\SwooleTW\Http\Coroutine\PDOStatement
      */
     public function prepare($statement, $options = null)

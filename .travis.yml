@@ -12,6 +12,7 @@ matrix:
     - php: 7.2
 
 before_install:
+  - phpenv config-rm xdebug.ini
   - printf "\n" | pecl install swoole
   - mysql -e 'CREATE DATABASE owuan_mysql_test;'
 
@@ -21,7 +22,7 @@ install:
 
 script:
   - mkdir -p build/logs
-  - vendor/bin/phpunit --coverage-clover build/logs/clover.xml
+  - phpdbg -qrr phpunit
 
 after_success:
   - vendor/bin/php-coveralls -v

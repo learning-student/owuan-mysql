@@ -15,21 +15,20 @@ class PdoConnectionTest extends TestCase
     {
         $this->expectException(ConnectionException::class);
 
-        list($dsn, $username, $password) = $this->getConnectionInfo();
+        [$dsn, $username, $password] = $this->getConnectionInfo();
 
-        new PDO($dsn, $username, $password);
+        new PDO($dsn, "", $password);
 
     }
 
 
     public function testPdoCanConnectWithCorrectInfo()
     {
-        list($dsn, $username, $password) = $this->getConnectionInfo();
 
+        go(function (){
+            [$dsn, $username, $password] = $this->getConnectionInfo();
 
-
-
-        new PDO($dsn, $username, $password);
-
+            new PDO($dsn, $username, $password);
+        });
     }
 }
