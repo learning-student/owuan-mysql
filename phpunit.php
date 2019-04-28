@@ -7,6 +7,7 @@
 go(function () {
     global $argv, $argc;
 
+
     /*
  * This file is part of PHPUnit.
  *
