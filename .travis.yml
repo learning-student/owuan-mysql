@@ -23,7 +23,7 @@ install:
 
 script:
   - mkdir -p build/logs
-  - php phpunit.php
+  - php phpunit.php --coverage-clover build/logs/clover.xml
 
 after_success:
   - vendor/bin/php-coveralls -v
