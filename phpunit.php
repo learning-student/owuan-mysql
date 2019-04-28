@@ -64,4 +64,7 @@ go(function () {
 
     PHPUnit\TextUI\Command::main();
 
+
+    exit(0);
 });
+
