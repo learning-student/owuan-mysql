@@ -2,7 +2,7 @@
 
 namespace Owuan\Mysql;
 
-class StatementException extends \Exception
+class StatementException extends \PDOException
 {
     //
 }

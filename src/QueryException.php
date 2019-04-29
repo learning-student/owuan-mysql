@@ -4,7 +4,7 @@
 namespace Owuan\Mysql;
 
 
-class QueryException extends \Exception
+class QueryException extends \PDOException
 {
 
 }

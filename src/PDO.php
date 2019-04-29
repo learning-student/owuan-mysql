@@ -12,10 +12,17 @@ use Swoole\Coroutine\Mysql;
  */
 class PDO extends BasePDO
 {
-    public static $keyMap = [
+
+    /**
+     * @var array
+     */
+    private static $keyMap = [
         'dbname' => 'database',
     ];
 
+    /**
+     * @var array
+     */
     private static $options = [
         'host' => '',
         'port' => 3306,
@@ -33,7 +40,7 @@ class PDO extends BasePDO
     /**
      * @var bool
      */
-    public $inTransaction = false;
+    private $inTransaction = false;
 
     /**
      * PDO constructor.
@@ -77,7 +84,8 @@ class PDO extends BasePDO
     /**
      * @return Mysql
      */
-    public function getClient(){
+    public function getClient()
+    {
         return $this->client;
     }
 
@@ -164,12 +172,13 @@ class PDO extends BasePDO
     }
 
     /**
-     * @return bool|void
+     * @return bool
      */
     public function beginTransaction()
     {
-        $this->client->begin();
         $this->inTransaction = true;
+
+        return $this->client->begin();
     }
 
     /**
@@ -188,10 +197,9 @@ class PDO extends BasePDO
      */
     public function commit()
     {
-        $commit = $this->client->commit();
         $this->inTransaction = true;
 
-        return $commit;
+        return $this->client->commit();;
     }
 
     /**
@@ -294,7 +302,7 @@ class PDO extends BasePDO
         }
 
 
-        throw new QueryException($statement . ":" . $this->client->error, $this->client->errno);
+        throw new QueryException($statement . " : " . $this->client->error, $this->client->errno);
     }
 
 
@@ -336,16 +344,10 @@ class PDO extends BasePDO
      */
     public function quote($string, $paramtype = null)
     {
-        throw new \BadMethodCallException(
-            <<<TXT
-If you are using this function to build SQL statements,
-you are strongly recommended to use PDO::prepare() to prepare SQL statements
-with bound parameters instead of using PDO::quote() to interpolate user input into an SQL statement.
-Prepared statements with bound parameters are not only more portable, more convenient,
-immune to SQL injection, but are often much faster to execute than interpolated queries,
-as both the server and client side can cache a compiled form of the query.
-TXT
-        );
+        $search = array("\\", "\x00", "\n", "\r", "'", '"', "\x1a");
+        $replace = array("\\\\", "\\0", "\\n", "\\r", "\'", '\"', "\\Z");
+
+        return str_replace($search, $replace, $string);
     }
 
     /**
