@@ -68,20 +68,31 @@ class PdoTest extends TestCase
     {
         $pdo = $this->getPdoInstance();
 
-       foreach ($this->attributes as $attribute => $value){
-           $this->assertEquals(
-               $pdo->getAttribute($attribute),
-               $value
-           );
-       }
+        foreach ($this->attributes as $attribute => $value) {
+            $this->assertEquals(
+                $pdo->getAttribute($attribute),
+                $value
+            );
+        }
 
 
-       $this->expectException(\InvalidArgumentException::class);
+        $this->expectException(\InvalidArgumentException::class);
 
-       $pdo->getAttribute(55);
+        $pdo->getAttribute(55);
 
     }
 
 
-    
+    public function testQuote()
+    {
+        $pdo = $this->getPdoInstance();
+
+
+        $output = $pdo->quote('test');
+
+
+        $this->assertEquals('test', $output);
+    }
+
+
 }

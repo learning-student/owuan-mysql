@@ -187,13 +187,6 @@ class PdoQueryTest extends TestCase
         $pdo->prepare('SELEC * FROM testtable');
     }
 
-    public function testQuote()
-    {
-        $pdo = $this->getPdoInstance();
 
-        $this->expectException(\BadMethodCallException::class);
-
-        $pdo->quote('test');
-    }
 
 }
