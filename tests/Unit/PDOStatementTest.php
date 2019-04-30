@@ -16,7 +16,7 @@ class PDOStatementTest extends TestCase
         $pdo = $this->getPdoInstance();
 
 
-        $pdo->exec("create table if not exits owuan_test(id int)");
+        $pdo->exec("create table if not exists  owuan_test(id int)");
 
         $statement = $pdo->prepare("SELECT * FROM owuan_test ");
 
