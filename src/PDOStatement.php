@@ -127,9 +127,16 @@ class PDOStatement extends BaseStatement
         return true;
     }
 
+    /**
+     * @param int $fetchStyle
+     * @param null $params
+     * @return bool
+     */
     public function setFetchMode($fetchStyle, $params = null)
     {
         $this->fetchStyle = $fetchStyle;
+
+        return true;
     }
 
     private function executeWhenStringQueryEmpty()

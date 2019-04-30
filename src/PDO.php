@@ -276,7 +276,7 @@ class PDO extends BasePDO
      * @param string $statement
      * @param array $options
      *
-     * @return bool|\PDOStatement|\SwooleTW\Http\Coroutine\PDOStatement
+     * @return PDOStatement
      * @throws QueryException
      */
     public function prepare($statement, $options = null)
